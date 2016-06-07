@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha testSetup.js src/**/*.spec.js --reporter progress",
     "test:watch": "npm run test -- --watch",
+    "start": "npm run test:watch",
     "build": "browserify -s runtypes src -o runtypes.js -t [ babelify ]",
     "release": "npm run release:patch",
     "release:patch": "npm run build && xyz --increment patch",
