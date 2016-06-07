@@ -10,7 +10,8 @@ import {
   errNotAType,
   errTooManyResultTypes,
   errWrappingNonFunction,
-  errNumArgs,
+  errNumProvidedArgs,
+  errNumUsedArgs,
   errBadArg,
   errBadResult
 } from './messages'
@@ -47,13 +48,22 @@ describe('Fun', () => {
 
   const pow = () => PowType.checking(Math.pow)
 
-  whetherCheckingOrNotIt('computes correct results', () => {
-    assert.equal(pow()(2, 3), 8)
-  })
+  whetherCheckingOrNotIt('computes correct results',
+    () => assert.equal(pow()(2, 3), 8)
+  )
 
   ifCheckingIt('requires correct number of arguments',
     () => pow()(1),
-    errNumArgs(2, 1)
+    errNumProvidedArgs(2, 1)
+  )
+
+  ifCheckingIt('disallows its wrapped function from expecting too many arguments',
+    () => PowType.checking((x, y, z) => x + y + z),
+    errNumUsedArgs(2, 3)
+  )
+
+  whetherCheckingOrNotIt('allows the wrapped function to not use all arguments',
+    () => PowType.checking((x) => x)
   )
 
   ifCheckingIt('requires correctly-typed arguments',

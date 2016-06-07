@@ -9,7 +9,8 @@ import {
   errNotAType,
   errTooManyResultTypes,
   errWrappingNonFunction,
-  errNumArgs,
+  errNumProvidedArgs,
+  errNumUsedArgs,
   errBadArg,
   errBadResult
 } from './messages'
@@ -46,10 +47,13 @@ export default function (...paramTypes) {
         if (typeof f !== 'function')
           throw new TypeError(errWrappingNonFunction(f))
 
+        if (f.length > paramTypes.length)
+          throw new TypeError(errNumUsedArgs(paramTypes.length, f.length))
+
         return function (...args) {
           // Num args check
           if (args.length !== paramTypes.length)
-            throw new TypeError(errNumArgs(paramTypes.length, args.length))
+            throw new TypeError(errNumProvidedArgs(paramTypes.length, args.length))
 
           // Per-argument validation
           for (let i = 0; i < args.length; i++) {

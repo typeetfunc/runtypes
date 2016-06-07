@@ -20,6 +20,7 @@ export const errGetNonexistentRecordField = (key, validKeys) => `attempted to ge
 
 export const errWrappingNonFunction = (arg) => `attempted to create a checked function from non-function ${showVal(arg)}`
 export const errTooManyResultTypes = 'functions can have at most one result type'
-export const errNumArgs = (numParams, numArgs) => `wrong number of arguments: expected ${numParams} but was ${numArgs}`
+export const errNumProvidedArgs = (numParams, numArgs) => `wrong number of arguments provided: expected ${numParams} but was ${numArgs}`
+export const errNumUsedArgs = (numParams, numArgs) => `function spec declares ${numParams} parameters but wrapped function wants ${numArgs}`
 export const errBadArg = (arg, argIndex, errMsg) => `invalid ${nth(argIndex)} argument ${showVal(arg)}; ${errMsg}`
 export const errBadResult = (errMsg) => `wrapped function produced invalid result: ${errMsg}`
