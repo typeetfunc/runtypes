@@ -66,4 +66,18 @@ describe('Record', () => {
     () => Point({ x: 5, y: 2}).z,
     errGetNonexistentRecordField('z', ['x', 'y'])
   )
+
+  whetherCheckingOrNotIt('can have values with complex types',
+    () => Record({
+      x: Number,
+      foo: Record({
+        y: String,
+        z: Boolean
+      })
+    })
+  )
+
+  // const compound = Point({
+  //   x: 3
+  // })
 })

@@ -5,8 +5,7 @@ import {
 } from './settings'
 
 import {
-  isType,
-  checkType
+  getTypeChecker
 } from './check'
 
 import {
@@ -27,16 +26,19 @@ export default (spec) => {
 
     const paramTypes = spec[tag]
 
+    let typeCheckers
     if (check()) {
       // Validate that the constructor was specified with an array of type params
       if (!Array.isArray(paramTypes))
         throw new TypeError(errNotACtorTypeArray(paramTypes))
 
+      typeCheckers = new Array(paramTypes.length)
       // Validate that each param type is in fact a type
       for (let i = 0; i < paramTypes.length; i++) {
-        const paramType = paramTypes[i]
-        if (!isType(paramType))
+        const checker = getTypeChecker(paramTypes[i])
+        if (!checker)
           throw new TypeError(errNotAType(paramType))
+        typeCheckers[i] = checker
       }
     }
 
@@ -50,8 +52,7 @@ export default (spec) => {
         // Per-argument validation
         for (let i = 0; i < args.length; i++) {
           const arg = args[i]
-          const type = paramTypes[i]
-          const errMsg = checkType(arg, type)
+          const errMsg = typeCheckers[i](arg)
           if (errMsg)
             throw new TypeError(errBadCtorArg(arg, i, tag, errMsg))
         }

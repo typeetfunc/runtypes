@@ -1,10 +1,10 @@
-import { primByType } from './primitives'
+import { getType } from './type'
 
-export const showType = (type) => {
-  const prim = primByType.get(type)
-  if (prim)
-    return prim.name
-  throw new Error(`unable to show type ${type}`)
+export const showType = (rawType) => {
+  const type = getType(rawType)
+  if (type)
+    return type.name
+  throw new Error(`unrecognized type ${type}`)
 }
 
 export const showVal = (val) => {
