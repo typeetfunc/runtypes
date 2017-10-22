@@ -163,6 +163,8 @@ export function Contract(...runtypes: Runtype<any>[]) {
   const argTypes = runtypes.slice(0, lastIndex)
   const returnType = runtypes[lastIndex]
   return {
+    argTypes,
+    returnType,
     enforce: (f: (...args: any[]) => any) => (...args: any[]) => {
       if (args.length < argTypes.length)
         throw validationError(`Expected ${argTypes.length} arguments but only received ${args.length}`)
